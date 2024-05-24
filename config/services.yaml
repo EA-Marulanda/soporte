@@ -1,20 +1,51 @@
-
 services:
-    # Servicio de autenticación
-    App\Auth\Login\Aplicacion\Servicios\AutenticacionService:
-        # Puedes definir cualquier configuración específica del servicio aquí
-        # Por ejemplo, inyección de dependencias
+
+    App\Auth\Login\Infrastructure\Security\SymfonyPasswordHasher:
         arguments:
-            $userRepository: '@App\Auth\Login\Dominio\Repositorios\UsuarioRepositoryInterface'
-        
+            $passwordHasher: '@security.password_hasher'
+    
+    App\Auth\Login\Domain\Service\PasswordHasherInterface:
+        alias: 'App\Auth\Login\Infrastructure\Security\SymfonyPasswordHasher'
 
-    # Repositorio de usuario
-    App\Auth\Login\Dominio\Repositorios\UsuarioRepositoryInterface:
-        # Define el servicio como una interfaz
-        class: App\Auth\Login\Infraestructura\Repositorios\UsuarioRepository
+    App\Auth\Login\Application\UserService:
+        arguments:
+            $userRepository: '@App\Auth\Login\Infrastructure\Persistence\UserRepository'
+            $passwordHasher: '@App\Auth\Login\Domain\Service\PasswordHasherInterface'
 
-    App\Auth\Login\Infraestructura\Controlador\LoginController:
-            # Puedes agregar cualquier configuración adicional aquí
-            # Por ejemplo, la configuración de las dependencias
-            autowire: true
-            autoconfigure: true
+    App\Auth\Login\Application\AuthenticationService:
+        arguments: ['@App\Auth\Login\Domain\Repository\UserRepositoryInterface']
+
+    App\Auth\Login\Domain\Repository\UserRepositoryInterface: 
+        alias: App\Auth\Login\Infrastructure\Persistence\UserRepository
+
+    App\Auth\Login\Infrastructure\Persistence\UserRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
+    
+    
+    #App\Auth\Login\Infrastructure\Persistence\UserRepository:
+    #   arguments:
+    #      $entityManager: '@doctrine.orm.entity_manager'
+    
+
+    App\Auth\Login\Infrastructure\Security\LoginFormAuthenticator:
+        arguments:
+            $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+    
+    App\Auth\Login\Infrastructure\Security\SymfonySecurityAdapter:
+        arguments:
+            $userRepository: '@App\Auth\Login\Domain\Repository\UserRepositoryInterface'
+    
+    App\Auth\Login\Application\Controller\LoginController:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Auth\Login\Application\Controller\UserController:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    doctrine.orm.metadata.annotation_reader:
+        class: Doctrine\Common\Annotations\AnnotationReader

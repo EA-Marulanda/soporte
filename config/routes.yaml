@@ -1,9 +1,35 @@
 # config/routes.yaml
 
-login:
-    path: '/login'
-    controller: 'App\Auth\Login\Infraestructura\Controlador\LoginController::login'
+app_login:
+    path: /login
+    controller: App\Auth\Login\Application\Controller\LoginController::login
 
-logout:
-    path: '/logout'
-    controller: 'App\Auth\Login\Infraestructura\Controlador\LoginController::logout'
+app_logout:
+    path: /logout
+    controller: App\Auth\Login\Application\Controller\LoginController::logout
+
+dashboard:
+    path: /dashboard
+    controller: App\dashboard\Infraestructura\Controlador\DashboardController::index
+
+admin_user_index:
+    path: /dashboard/admin/users
+    controller: App\Auth\Login\Application\Controller\UserController::index
+
+admin_user_new:
+    path: /admin/users/new
+    controller: App\Auth\Login\Application\Controller\UserController::new
+
+admin_user_edit:
+    path: /admin/users/{id}/edit
+    controller: App\Auth\Login\Application\Controller\UserController::edit
+
+admin_change_state:
+    path: /admin/users/estado/{id}
+    controller: App\Auth\Login\Application\Controller\UserController::changeEstate
+    methods: POST
+
+admin_user_delete:
+    path: /admin/users/{id}
+    controller: App\Auth\Login\Application\Controller\UserController::delete
+    methods: POST
