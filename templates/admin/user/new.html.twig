@@ -12,27 +12,30 @@
 		</div>
 		<div class="row ">
 			<div class="col-12 d-flex justify-content-center">
-
 				{{ form_start(form, {'attr': {'class': 'form w-50'}}) }}
 				<div class="form-group">
 					{{ form_row(form.nombre, {'attr': {'class': 'form-control mb-2'}}) }}
+					{{ form_errors(form.nombre) }}
 				</div>
 				<div class="form-group">
 					{{ form_row(form.usuario, {'attr': {'class': 'form-control mb-2'}}) }}
+					{{ form_errors(form.usuario) }}
 				</div>
 				<div class="form-group">
 					{{ form_row(form.password, {'attr': {'class': 'form-control mb-3'}}) }}
+					{{ form_errors(form.password) }}
 				</div>
 				<div class="form-group form-check mb-3">
 					{{ form_row(form.tiene_captcha, {'attr': {'class': 'form-check-input '}}) }}
 
 				</div>
 				<div class="form-group">
-					{{ form_row(form.roles, {'attr': {'class': 'form-control mb-2'}}) }}
+					{{ form_row(form.rol, {'attr': {'class': 'form-control mb-2'}}) }}
 				</div>
 				<div class="d-flex justify-content-end ">
 					<button type="submit" class="btn btn-primary me-2">Registrar</button>
-                     <a class="btn btn-primary" href="{{ path('admin_user_index') }}"> Cancelar</a>
+					<a class="btn btn-primary" href="{{ path('admin_user_index') }}">
+						Cancelar</a>
 				</div>
 				{{ form_end(form) }}
 			</div>

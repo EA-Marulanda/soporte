@@ -36,11 +36,14 @@ class UserController extends AbstractController
     #[Route('/new', name: 'admin_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        $user = new Usuario('', '', '', false, true,[]);
-        $form = $this->createForm(UsuarioType::class, $user);
+        $roles = $this->userService->getAllRoles();
+        $rol = new Rol("funcionario"); 
+
+        $user = new Usuario('', '', '', false, true, $rol);
+        $form = $this->createForm(UsuarioType::class, $user, ['roles' => $roles]);
+      
         $form->handleRequest($request);
-        $rol = new Rol(1,"admin");
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->userService->createUser(
                 $form->get('nombre')->getData(),
@@ -48,7 +51,9 @@ class UserController extends AbstractController
                 $form->get('password')->getData(),
                 $form->get('tiene_captcha')->getData(),
                 true,
-                [$rol]);
+                $form->get('rol')->getData()
+                
+            );
 
             return $this->redirectToRoute('admin_user_index');
         }
@@ -66,7 +71,8 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('User not found');
         }
 
-        $form = $this->createForm(UsuarioType::class, $user);
+        $roles = $this->userService->getAllRoles();
+        $form = $this->createForm(UsuarioType::class, $user, ['roles' => $roles]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -77,7 +83,7 @@ class UserController extends AbstractController
                 $form->get('tiene_captcha')->getData(),
 
                 $form->get('password')->getData(),
-                explode(',', $form->get('roles')->getData())
+                $form->get('rol')->getData()
             );
 
             return $this->redirectToRoute('admin_user_index');

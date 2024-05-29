@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registro de soporte
+{% endblock %}
+
+{% block body %}
+	<div class="container bg-light d-flex flex-column  p-5 vh-100">
+		<div class="row ">
+			<div class="col-12 ">
+				<h5>Registro de soporte</h5>
+			</div>
+		</div>
+		{{ form_start(form, {'attr': {'class': 'form w-75'}}) }}
+		<div class="row ">
+
+			<div class="col-3">
+				<div class="form-group">
+					{{ form_row(form.cedula, {'attr': {'class': 'form-control mb-2', 'escape': true}})}}
+				</div>
+			</div>
+			<div class="col-5 ">
+				<div class="form-group">
+					{{ form_row(form.nombre, {'attr': {'class': 'form-control mb-2', 'escape': true}}) }}
+				</div>
+			</div>
+			<div class="col-4">
+
+				<div class="form-group">
+					{{ form_row(form.correo, {'attr': {'class': 'form-control mb-3'}}) }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-10 ">
+				<div class="form-group mb-3">
+					{{ form_row(form.asunto, {'attr': {'class': 'form-control mb-1 '}}) }}
+
+				</div>
+			</div>
+			<div class="col-2">
+				<div class="form-group mb-3">
+					{{ form_row(form.prioridad, {'attr': {'class': 'form-control mb-1 '}}) }}
+
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="form-group mb-3"></div>
+				<div class="form-floating">
+					{{ form_row(form.descripcion, {'attr': {'class': 'form-control mb-3 '}}) }}
+				</div>
+			</div>
+
+			<div class="d-flex justify-content-end ">
+				<button type="submit" class="btn btn-primary me-2">Registrar</button>
+				<a class="btn btn-primary" href="{{ path('app_home') }}">
+					Cancelar</a>
+			</div>
+		</div>
+	</div>
+	{{ form_end(form) }}
+
+</div>{% endblock %}

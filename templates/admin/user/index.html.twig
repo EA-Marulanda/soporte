@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User Management
+{% block title %}Gestión de usuarios
 {% endblock %}
 
 {% block body %}
@@ -23,7 +23,7 @@
 						<tr>
 							<th>Nombre</th>
 							<th>Usuario</th>
-							<th>Roles</th>
+							<th>Rol</th>
 							<th>Estado</th>
 							<th>Acciones</th>
 						</tr>
@@ -33,7 +33,7 @@
 							<tr>
 								<td>{{ user.nombre }}</td>
 								<td>{{ user.usuario }}</td>
-								<td>{{ user.roles | join(', ') }}</td>
+								<td>{{ user.rol.name }}</td>
 								<td>
 									<form method="post" action="{{ path('admin_change_state', {id: user.id}) }}" id="toggle-status-form-{{ user.id }}" style="display:inline;">
 										<div class="form-check form-switch">

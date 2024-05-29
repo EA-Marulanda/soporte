@@ -11,6 +11,7 @@ services:
         arguments:
             $userRepository: '@App\Auth\Login\Infrastructure\Persistence\UserRepository'
             $passwordHasher: '@App\Auth\Login\Domain\Service\PasswordHasherInterface'
+            $rolRepository: '@App\Auth\Login\Infrastructure\Persistence\RolRepository'
 
     App\Auth\Login\Application\AuthenticationService:
         arguments: ['@App\Auth\Login\Domain\Repository\UserRepositoryInterface']
@@ -22,12 +23,11 @@ services:
         arguments:
             $registry: '@doctrine'
         tags: ['doctrine.repository_service']
-    
-    
-    #App\Auth\Login\Infrastructure\Persistence\UserRepository:
-    #   arguments:
-    #      $entityManager: '@doctrine.orm.entity_manager'
-    
+        
+    App\Auth\Login\Infrastructure\Persistence\RolRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
 
     App\Auth\Login\Infrastructure\Security\LoginFormAuthenticator:
         arguments:
@@ -37,6 +37,48 @@ services:
         arguments:
             $userRepository: '@App\Auth\Login\Domain\Repository\UserRepositoryInterface'
     
+#soporte
+    App\Soporte\Aplicacion\Servicio\SoporteService:
+        arguments:
+            $soporteRepository: '@App\Soporte\Infraestructura\Persistencia\SoporteRepository'
+    
+    App\Soporte\Aplicacion\Servicio\UsuarioSoporteService:
+        arguments:
+            $usuarioSoporteRepository: '@App\Soporte\Infraestructura\Persistencia\UsuarioSoporteRepository'
+            
+    App\Soporte\Infraestructura\Persistencia\SoporteRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
+
+        
+    App\Soporte\Infraestructura\Persistencia\UsuarioSoporteRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
+
+#usuario externo
+    App\Soporte\Aplicacion\Servicio\UsuarioExternoService:
+        arguments:
+            $usuarioExternoRepository: '@App\Soporte\Infraestructura\Persistencia\UsuarioExternoRepository'
+
+            
+    App\Soporte\Infraestructura\Persistencia\UsuarioExternoRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags: ['doctrine.repository_service']
+
+    App\Soporte\Aplicacion\Controlador\SoporteController:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Home\HomeController:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+
     App\Auth\Login\Application\Controller\LoginController:
         autowire: true
         autoconfigure: true
@@ -47,5 +89,14 @@ services:
         autoconfigure: true
         public: false
 
+
+    App\dashboard\Infraestructura\Controlador\DashboardController:
+        autowire: true
+        autoconfigure: true
+        public: false
+
     doctrine.orm.metadata.annotation_reader:
         class: Doctrine\Common\Annotations\AnnotationReader
+
+    #seguridad
+    App\Seguridad\DetectorInyecccionSQL:

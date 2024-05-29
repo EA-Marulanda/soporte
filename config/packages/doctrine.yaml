@@ -19,11 +19,17 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App:
+            AppLogin:
                 type: attribute
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Auth/Login/Domain/Model'
                 prefix: 'App\Auth\Login\Domain\Model'
-                alias: App
+                alias: AppLogin
+            AppSoporte:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Soporte/Dominio/Entidades'
+                prefix: 'App\Soporte\Dominio\Entidades'
+                alias: AppSoporte
         controller_resolver:
             auto_mapping: true

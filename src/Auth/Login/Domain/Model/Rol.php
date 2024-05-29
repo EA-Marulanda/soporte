@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Auth\Login\Domain\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,7 +18,7 @@ class Rol
     #[ORM\Column(length: 55, unique: true)]
     private string $name;
 
-    #[ORM\ManyToMany(targetEntity: Usuario::class, mappedBy: 'roles')]
+    #[ORM\OneToMany(targetEntity: Usuario::class, mappedBy: 'rol')]
     private Collection $users;
 
     public function __construct(string $name)

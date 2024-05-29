@@ -15,14 +15,24 @@ class LoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('usuario', TextType::class)
-            ->add('password', PasswordType::class);
+            ->add('usuario', TextType::class, [
+                'label' => 'Usuario',
+                'attr' => [
+                    'class' => 'form-control',
+                    'name' => '_usuario', // Esto establece el nombre del campo
+                ],
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => 'Contraseña',
+                'attr' => ['class' => 'form-control'],
+            ]);
     }
-    
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Usuario::class,
+            'csrf_token_id' => null, // Desactiva el token CSRF para este formulario
         ]);
     }
+    
+    
 }

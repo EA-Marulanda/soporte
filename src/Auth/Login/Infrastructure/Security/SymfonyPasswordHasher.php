@@ -17,10 +17,10 @@ class SymfonyPasswordHasher implements PasswordHasherInterface
 
     public function hashPassword(string $plainPassword): string
     {
-        // Usando SHA-512 directamente
-        return hash('sha512', $plainPassword);
+      
+        //return hash('sha512', $plainPassword);
+        return password_hash($plainPassword, PASSWORD_DEFAULT);
 
-        // O usando el PasswordHasher de Symfony
         // return $this->passwordHasher->hashPassword(new Usuario(), $plainPassword);
     }
 }

@@ -20,13 +20,6 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     private int $id;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 50)]
-    #[Assert\Length(min: 5)]
-    #[Assert\Regex(
-        pattern: "/^[a-zA-Z]+$/",
-        message: "El nombre solo debe contener letras."
-    )]
     private string $nombre;
 
     #[ORM\Column(length: 55, unique: true)]
@@ -41,19 +34,20 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $tiene_captcha;
 
+    #[ORM\ManyToOne(targetEntity:Rol::class, inversedBy:"users")]
+    #[ORM\JoinColumn(name: 'rol_id')]
+    private $rol;
+    
 
-    #[ORM\ManyToMany(targetEntity: Rol::class, inversedBy: 'users', cascade: ['persist'])]
-    #[ORM\JoinTable(name: 'user_roles')]
-    private Collection $roles;
 
-    public function __construct(string $nombre, string $usuario, string $contrasena, bool $tiene_captcha, bool $estado, array $roles = [])
+    public function __construct(string $nombre, string $usuario, string $contrasena, bool $tiene_captcha, bool $estado, Rol $rol)
     {
         $this->nombre = $nombre;
         $this->usuario = $usuario;
-        $this-> estado = $estado;
+        $this->estado = $estado;
         $this->contrasena = $contrasena;
         $this->tiene_captcha = $tiene_captcha;
-        $this->roles = new ArrayCollection($roles);
+        $this->rol = $rol;
     }
 
     public function getId(): int
@@ -73,22 +67,21 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        $roles = $this->roles->map(fn(Rol $role) => $role->getName())->toArray();
-        return array_unique($roles);
+        return [];
     }
 
     public function addRole(Rol $role): self
     {
-        if (!$this->roles->contains($role)) {
+        /*if (!$this->roles->contains($role)) {
             $this->roles->add($role);
-        }
+        }*/
 
         return $this;
     }
 
     public function removeRole(Rol $role): self
     {
-        $this->roles->removeElement($role);
+        //$this->roles->removeElement($role);
         return $this;
     }
 
@@ -142,10 +135,9 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles($roles)
     {
-        $this->roles = $roles;
+       // $this->roles = $roles;
         return $this;
     }
-    
     public function getEstado()
     {
         return $this->estado;
@@ -159,6 +151,26 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEstado($estado)
     {
         $this->estado = $estado;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rol_id
+     */ 
+    public function getRol()
+    {
+        return $this->rol;
+    }
+
+    /**
+     * Set the value of rol_id
+     *
+     * @return  self
+     */ 
+    public function setRol($rol)
+    {
+        $this->rol = $rol;
 
         return $this;
     }
